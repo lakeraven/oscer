@@ -852,6 +852,55 @@ RSpec.describe ExclusionDeterminationService do
       end
     end
 
+    context 'with the real MockAmericanIndianAlaskaNative data source' do
+      let(:member_data) { build(:certification_member_data, account_email: email, cert_date:) }
+
+      before do
+        allow(Rails.application.config).to receive(:verification_data_sources).and_return(
+          [ { id: :mock_american_indian_alaska_native, enabled: true, adapter_class: "Verification::Adapters::MockAmericanIndianAlaskaNative", order: nil } ]
+        )
+      end
+
+      # oscer-fork/01, "A confirmed status excludes, and the basis is recorded"
+      # oscer-fork/01, "An out-of-state asserter counts the same as an in-state one"
+      %w[aian-tribe aian-itu aian-outofstate].each do |tag|
+        context "when the member email carries #{tag}" do
+          let(:email) { "member+#{tag}@example.com" }
+
+          it 'excludes with the AI/AN reason and names the data source' do
+            service.determine(kase)
+            expect(recorded_exclusion.reasons).to eq([ "american_indian_alaska_native_excluded" ])
+            expect(recorded_exclusion.determination_data["data_source"]).to eq("mock_american_indian_alaska_native")
+          end
+        end
+      end
+
+      # oscer-fork/01, "A lead alone emits no outcome"
+      # oscer-fork/01, "Not confirmed emits no outcome"
+      # oscer-fork/01, "A source error is an error result, not a no"
+      %w[aian-lead aian-no aian-error].each do |tag|
+        context "when the member email carries #{tag}" do
+          let(:email) { "member+#{tag}@example.com" }
+
+          it 'does not exclude' do
+            service.determine(kase)
+            expect(recorded_exclusion).to be_nil
+            expect(Strata::EventManager).to have_received(:publish).with('DeterminedNotExcluded', { case_id: kase.id, certification_id: kase.certification_id })
+          end
+        end
+      end
+
+      # oscer-fork/01, "No tag means the source is skipped"
+      context 'when the member email carries no tag' do
+        let(:email) { "member@example.com" }
+
+        it 'does not exclude' do
+          service.determine(kase)
+          expect(recorded_exclusion).to be_nil
+        end
+      end
+    end
+
     context 'with the real MockDrugTreatment data source' do
       let(:member_data) { build(:certification_member_data, va_icn: va_icn, cert_date:) }
 

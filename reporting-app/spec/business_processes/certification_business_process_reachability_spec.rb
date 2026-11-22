@@ -58,6 +58,33 @@ RSpec.describe CertificationBusinessProcess, type: :business_process do
     end
   end
 
+  # oscer-fork/01, "A confirmed status excludes, and the basis is recorded"
+  # The AI/AN source is exclusion-only (no order), so it is reached at the exclusion step.
+  describe "the AI/AN data source (consulted at the exclusion step)" do
+    %w[aian-tribe aian-itu aian-outofstate].each do |tag|
+      it "records an AI/AN exclusion for a member email tagged #{tag}" do
+        outcome = drive(va_icn: "1000000X", email: "member+#{tag}@example.com")
+        determination = sole_determination(outcome)
+
+        expect(outcome[:step]).to eq(CertificationBusinessProcess::END_STEP)
+        expect(determination.outcome).to eq("excluded")
+        expect(determination.reasons).to eq([ "american_indian_alaska_native_excluded" ])
+        expect(determination.determination_data).to include(
+          "data_source" => "mock_american_indian_alaska_native"
+        )
+      end
+    end
+
+    # oscer-fork/01, "A lead alone emits no outcome" and "Not confirmed emits no outcome"
+    %w[aian-lead aian-no aian-error].each do |tag|
+      it "does not exclude for a member email tagged #{tag}" do
+        outcome = drive(va_icn: "1000000X", email: "member+#{tag}@example.com")
+
+        expect(outcome[:step]).to eq(CertificationBusinessProcess::REPORT_ACTIVITIES_STEP)
+      end
+    end
+  end
+
   describe "the verification_data_source_check step" do
     it "records a source-attested exception for an even va_icn last digit" do
       outcome = drive(va_icn: "1000000002")
