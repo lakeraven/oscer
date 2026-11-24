@@ -746,4 +746,20 @@ RSpec.describe CertificationCase, type: :model do
       expect(certification_case.verification_window_start_date).not_to eq start_date
     end
   end
+
+  describe "#verification_window_ended?" do
+    before { certification_case.update!(verification_window_end_date: Date.new(2026, 11, 24)) }
+
+    it "is false on the evening before the end date in the app's time zone" do
+      travel_to(Time.zone.local(2026, 11, 23, 20)) do
+        expect(certification_case.verification_window_ended?).to be(false)
+      end
+    end
+
+    it "is true once the end date begins in the app's time zone" do
+      travel_to(Time.zone.local(2026, 11, 24, 0, 30)) do
+        expect(certification_case.verification_window_ended?).to be(true)
+      end
+    end
+  end
 end
