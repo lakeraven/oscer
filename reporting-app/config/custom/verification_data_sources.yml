@@ -73,6 +73,26 @@ mock_drug_treatment:
   adapter_class: "Verification::Adapters::MockDrugTreatment"
   order: null
 
+# Mock AI/AN data source, consulted at the exclusion step by ExclusionDeterminationService
+# (order-less, so the orchestrator skips it). It keys off a tag in the member's account_email,
+# the same idiom as mock_community_engagement, and is independent of va_icn:
+#
+#   tag in email      result
+#   --------------------------------------------------------------------------------
+#   aian-tribe        excluded (american_indian_alaska_native_excluded), route 447.51(1)
+#   aian-itu          excluded, route 447.51(4)
+#   aian-outofstate   excluded, route 447.51(1), asserter out of state
+#   aian-lead         no outcome, audit basis lead_only
+#   aian-no           no outcome, audit basis not_confirmed
+#   aian-error        error result, never an exclusion
+#   (none)            skipped
+#
+# Guarded by spec/business_processes/certification_business_process_reachability_spec.rb.
+mock_american_indian_alaska_native:
+  enabled: true
+  adapter_class: "Verification::Adapters::MockAmericanIndianAlaskaNative"
+  order: null
+
 # Mock data sources for Verification::DataSourceOrchestrator (OSCER-805). Both are
 # order-bearing, so the orchestrator consults them: no real non-exclusion source exists
 # yet, so these are what exercise the trailing verification_data_source_check step.
