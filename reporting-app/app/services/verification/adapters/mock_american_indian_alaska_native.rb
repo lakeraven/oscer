@@ -7,8 +7,8 @@ module Verification
     # emits the existing :is_american_indian_or_alaska_native exclusion outcome.
     #
     # The authority is a callable taking the certification and returning a response
-    # Hash . By default it reads a tag in the
-    # member's account_email, mirroring MockCommunityEngagement:
+    # Hash. By default it reads a tag in the member's account_email, mirroring
+    # MockCommunityEngagement:
     #
     #   tag in email      result
     #   -------------------------------------------------------------------------
