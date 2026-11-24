@@ -5,9 +5,9 @@ module Verification
   #
   # A data source is called with the full {Certification}; it pulls whatever it
   # needs (e.g. +certification.member_data&.va_icn+), calls its backing
-  # integration, and returns a {DataSourceResult} with a uniform shape so an
-  # orchestrator (built later, out of scope here) can call every source
-  # identically and audit them consistently.
+  # integration, and returns a {DataSourceResult} with a uniform shape so
+  # {DataSourceOrchestrator} can call every source identically and audit them
+  # consistently.
   #
   # Subclasses implement the protected hooks — {#precondition_met?} and
   # {#perform} — plus the class method {.declared_outcomes}. The public
