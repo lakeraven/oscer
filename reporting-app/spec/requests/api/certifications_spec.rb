@@ -1222,8 +1222,8 @@ RSpec.describe "/api/certifications", type: :request do
               {
                 "category": "employment",
                 "credit_hours": 9, # only education activities may report credit hours instead of hours
-                "period_start": Date.today.to_s,
-                "period_end": Date.today.to_s,
+                "period_start": Date.current.to_s,
+                "period_end": Date.current.to_s,
                 "verification_status" => "verified"
               }
             ]
@@ -1247,8 +1247,8 @@ RSpec.describe "/api/certifications", type: :request do
             activities: [
               {
                 "category": "employment",
-                "period_start": Date.today.to_s,
-                "period_end": Date.today.to_s,
+                "period_start": Date.current.to_s,
+                "period_end": Date.current.to_s,
                 "verification_status": "verified"
               }
             ]
@@ -1274,8 +1274,8 @@ RSpec.describe "/api/certifications", type: :request do
               {
                 "category": "education",
                 "credit_hours": 0,
-                "period_start": Date.today.to_s,
-                "period_end": Date.today.to_s,
+                "period_start": Date.current.to_s,
+                "period_end": Date.current.to_s,
                 "verification_status": "verified"
               }
             ]
@@ -1299,8 +1299,8 @@ RSpec.describe "/api/certifications", type: :request do
                 category: "employment",
                 hours: 20,
                 enrollment_status: "full_time",
-                period_start: Date.today.to_s,
-                period_end: Date.today.to_s,
+                period_start: Date.current.to_s,
+                period_end: Date.current.to_s,
                 verification_status: "verified"
               }
             ]
@@ -1323,8 +1323,8 @@ RSpec.describe "/api/certifications", type: :request do
               {
                 category: "education",
                 enrollment_status: "part_time",
-                period_start: Date.today.to_s,
-                period_end: Date.today.to_s,
+                period_start: Date.current.to_s,
+                period_end: Date.current.to_s,
                 verification_status: "verified"
               }
             ]
@@ -1347,8 +1347,8 @@ RSpec.describe "/api/certifications", type: :request do
               {
                 "category": "employment",
                 "hours": 20,
-                "period_start": Date.today.to_s,
-                "period_end": Date.today.to_s
+                "period_start": Date.current.to_s,
+                "period_end": Date.current.to_s
               }
             ]
           }
@@ -1370,8 +1370,8 @@ RSpec.describe "/api/certifications", type: :request do
               {
                 "category": "community_service",
                 "hours": 20,
-                "period_start": Date.today.to_s,
-                "period_end": Date.today.to_s,
+                "period_start": Date.current.to_s,
+                "period_end": Date.current.to_s,
                 "verification_status": "invalid_status"
               }
             ]
@@ -1395,8 +1395,8 @@ RSpec.describe "/api/certifications", type: :request do
                 "type": "invalid_type",
                 "category": "community_service",
                 "hours": 20,
-                "period_start": Date.today.to_s,
-                "period_end": Date.today.to_s
+                "period_start": Date.current.to_s,
+                "period_end": Date.current.to_s
               }
             ]
           }
@@ -1418,8 +1418,8 @@ RSpec.describe "/api/certifications", type: :request do
               {
                 "category": "invalid_category",
                 "hours": 20,
-                "period_start": Date.today.to_s,
-                "period_end": Date.today.to_s,
+                "period_start": Date.current.to_s,
+                "period_end": Date.current.to_s,
                 "verification_status" => "verified"
               }
             ]
@@ -1441,8 +1441,8 @@ RSpec.describe "/api/certifications", type: :request do
             activities: [
               {
                 "category": "employment",
-                "period_start": Date.today.to_s,
-                "period_end": Date.today.to_s,
+                "period_start": Date.current.to_s,
+                "period_end": Date.current.to_s,
                 "verification_status" => "verified"
               }
             ]
@@ -1492,8 +1492,8 @@ RSpec.describe "/api/certifications", type: :request do
                 "gross_incomes" => [
                   {
                     "gross_income" => 620,
-                    "period_start" => Date.today.beginning_of_month.to_s,
-                    "period_end" => Date.today.end_of_month.to_s
+                    "period_start" => Date.current.beginning_of_month.to_s,
+                    "period_end" => Date.current.end_of_month.to_s
                   }
                 ]
               }

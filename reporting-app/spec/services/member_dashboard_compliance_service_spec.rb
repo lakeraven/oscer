@@ -448,7 +448,7 @@ RSpec.describe MemberDashboardComplianceService do
     end
 
     context "when income aggregation runs against the open case" do
-      let(:application_date) { Date.today }
+      let(:application_date) { Date.current }
       let(:certification) { create(:certification, certification_requirements: build(:certification_certification_requirements, application_date:)) }
       let(:activity_report_application_form) { create(:activity_report_application_form, :with_submitted_status, certification_case_id: certification_case.id) }
 

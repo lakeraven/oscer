@@ -4,7 +4,7 @@ FactoryBot.define do
   # This is possible because Strata::Task is not abstract
   factory :task, class: Strata::Task do
     description { "Review the TO DO" }
-    due_on { Date.today + 1.week }
+    due_on { Date.current + 1.week }
   end
 
   factory :oscer_task, parent: :task, class: OscerTask do

@@ -14,7 +14,7 @@ RSpec.describe Determinable, type: :model do
         reasons: [ Determination::REASON_CODE_MAPPING[reason_code] ],
         outcome: :compliant,
         determination_data: { foo: :bar },
-        determined_at: Time.now
+        determined_at: Time.current
       }
     end
 
@@ -55,7 +55,7 @@ RSpec.describe Determinable, type: :model do
         reasons: [ Determination::REASON_CODE_MAPPING[reason_code] ],
         decision_method: :automated,
         determination_data: { foo: :bar },
-        determined_at: Time.now
+        determined_at: Time.current
       }
     end
 
@@ -97,7 +97,7 @@ RSpec.describe Determinable, type: :model do
         decision_method: :automated,
         outcome: :excluded,
         determination_data: { foo: :bar },
-        determined_at: Time.now
+        determined_at: Time.current
       }
     end
 
@@ -114,7 +114,7 @@ RSpec.describe Determinable, type: :model do
         reasons: [ Determination::REASON_CODE_MAPPING[reason_code] ],
         decision_method: :automated,
         determination_data: { foo: :bar },
-        determined_at: Time.now
+        determined_at: Time.current
       }
     end
 
