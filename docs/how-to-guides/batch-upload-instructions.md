@@ -75,7 +75,7 @@ To test different exemption scenarios, use the following fields:
 | Exemption Type | How to Test |
 |----------------|-------------|
 | **Age exemption** | Set `date_of_birth` so member is under 19 or over 64 |
-| **Tribal exemption** | Set `race_ethnicity` to `american_indian_or_alaska_native` |
+| **Tribal exemption** | Not set by any batch field. `race_ethnicity` is stored on the member but is not used by the exclusion rules |
 | **Pregnancy exemption** | Set `pregnancy_status` to `yes` |
 
 **Note:** For Medicaid age eligibility, members must be between 19 and 64 years old.
