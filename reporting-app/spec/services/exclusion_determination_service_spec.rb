@@ -861,18 +861,10 @@ RSpec.describe ExclusionDeterminationService do
         )
       end
 
-      context 'when the ICN is divisible by 3' do
-        let(:va_icn) { "9" }
-
-        it 'records the drug_treatment exclusion' do
-          service.determine(kase)
-          expect(recorded_exclusion.reasons).to eq([ "drug_treatment_excluded" ])
-        end
-
-        it 'records mock_drug_treatment as the exclusion data source' do
-          service.determine(kase)
-          expect(recorded_exclusion.determination_data["data_source"]).to eq("mock_drug_treatment")
-        end
+      it_behaves_like "a data source reaching the exclusion determination",
+                      source_id: :mock_drug_treatment, reason_code: "drug_treatment_excluded" do
+        let(:confirming_member_data) { build(:certification_member_data, va_icn: "9", cert_date:) }
+        let(:non_confirming_member_data) { build(:certification_member_data, va_icn: "8", cert_date:) }
       end
 
       context 'when the ICN is odd and not divisible by 3' do

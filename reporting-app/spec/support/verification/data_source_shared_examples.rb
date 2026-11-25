@@ -122,3 +122,55 @@ RSpec.shared_examples "a registered verification data source" do
     expect(described_class.declared_outcomes).to all(be_in(Determination::REASON_CODE_MAPPING.keys))
   end
 end
+
+# Runs a registered source end to end through +ExclusionDeterminationService+.
+# Parameterized by +source_id+ and +reason_code+; the host provides
+# +let(:confirming_member_data)+ and +let(:non_confirming_member_data)+, plus
+# the service spec's +kase+, +service+ and +recorded_exclusion+, whose
+# +member_data+ the examples set.
+RSpec.shared_examples "a data source reaching the exclusion determination" do |source_id:, reason_code:|
+  let(:entry) { Rails.application.config.verification_data_sources.find { |e| e[:id] == source_id } }
+
+  before do
+    allow(Rails.application.config).to receive(:verification_data_sources).and_return([ entry ])
+  end
+
+  context "when the source confirms the input" do
+    let(:member_data) { confirming_member_data }
+
+    it "excludes with the reason code" do
+      service.determine(kase)
+      expect(recorded_exclusion.reasons).to eq([ reason_code ])
+    end
+
+    it "records the source on the exclusion" do
+      service.determine(kase)
+      expect(recorded_exclusion.determination_data["data_source"]).to eq(source_id.to_s)
+    end
+  end
+
+  context "when the source does not confirm the input" do
+    let(:member_data) { non_confirming_member_data }
+
+    it "does not exclude on the source" do
+      service.determine(kase)
+      expect(recorded_exclusion).to be_nil
+    end
+  end
+
+  context "when the source returns an error" do
+    let(:member_data) { confirming_member_data }
+
+    before do
+      error = Verification::DataSourceResult.error(
+        error_code: "stubbed", error_message: "stubbed", audit_data: { source: source_id.to_s }
+      )
+      allow(entry[:adapter_class].constantize).to receive(:new).and_return(instance_double(Verification::DataSource, call: error))
+    end
+
+    it "pins current behavior pending navapbc/oscer#810: the member is determined not excluded" do
+      service.determine(kase)
+      expect(recorded_exclusion).to be_nil
+    end
+  end
+end
