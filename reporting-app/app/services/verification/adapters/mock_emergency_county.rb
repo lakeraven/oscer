@@ -22,6 +22,8 @@ module Verification
     # Because it declares no exclusion outcome, this source is order-bearing and is
     # consulted only by the orchestrator, never by ExclusionDeterminationService.
     class MockEmergencyCounty < Verification::DataSource
+      include VaIcnKeyed
+
       SOURCE = "mock_emergency_county"
       OUTCOME_EXCEPTED = :resides_in_declared_emergency_county
 
@@ -30,10 +32,6 @@ module Verification
       end
 
       protected
-
-      def precondition_met?(certification)
-        certification.member_data&.va_icn.present?
-      end
 
       def perform(certification:)
         success_result(
@@ -44,12 +42,10 @@ module Verification
 
       private
 
-      # Only the last character matters; a non-digit last character is "no result".
+      # A non-digit last character is "no result".
       def outcomes_for(va_icn)
-        last = va_icn[-1]
-        return [] unless last&.match?(/\A\d\z/)
-
-        last.to_i.even? ? [ OUTCOME_EXCEPTED ] : []
+        digit = last_digit(va_icn)
+        digit&.even? ? [ OUTCOME_EXCEPTED ] : []
       end
     end
   end
