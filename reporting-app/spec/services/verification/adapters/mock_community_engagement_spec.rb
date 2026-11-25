@@ -11,15 +11,13 @@ RSpec.describe Verification::Adapters::MockCommunityEngagement do
   let(:member_data_attrs) { { account_email: account_email } }
   let(:trigger) { described_class::TRIGGER_EMAIL_SUBSTRING }
 
+  it_behaves_like "a registered verification data source"
+
   describe ".declared_outcomes" do
     let(:account_email) { nil }
 
     it "declares the hours-met community-engagement outcome key" do
       expect(described_class.declared_outcomes).to contain_exactly(:hours_reported_compliant)
-    end
-
-    it "declares only Determination reason-code mapping keys" do
-      expect(described_class.declared_outcomes).to all(be_in(Determination::REASON_CODE_MAPPING.keys))
     end
 
     it "declares only non-exclusion (order-bearing) outcome keys" do

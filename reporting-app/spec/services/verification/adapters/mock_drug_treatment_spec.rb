@@ -22,13 +22,11 @@ RSpec.describe Verification::Adapters::MockDrugTreatment do
 
   let(:certification) { build(:certification, member_data: build(:certification_member_data, va_icn: va_icn)) }
 
+  it_behaves_like "a registered verification data source"
+
   describe ".declared_outcomes" do
     it "declares the exclusion and exception outcome keys" do
       expect(described_class.declared_outcomes).to contain_exactly(:drug_treatment, :was_in_drug_treatment)
-    end
-
-    it "declares only Determination reason-code mapping keys" do
-      expect(described_class.declared_outcomes).to all(be_in(Determination::REASON_CODE_MAPPING.keys))
     end
   end
 

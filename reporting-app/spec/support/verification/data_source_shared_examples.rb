@@ -108,3 +108,17 @@ RSpec.shared_examples "a resilient verification data source" do
     expect(result.audit_data).to be_a(Hash)
   end
 end
+
+# Registration invariants for a shipped data source. Host specs describe the
+# adapter class, so +described_class+ is the source under test.
+RSpec.shared_examples "a registered verification data source" do
+  it "has an entry in the data source registry" do
+    adapter_classes = Rails.application.config.verification_data_sources.pluck(:adapter_class)
+
+    expect(adapter_classes).to include(described_class.name)
+  end
+
+  it "declares only Determination reason-code mapping keys" do
+    expect(described_class.declared_outcomes).to all(be_in(Determination::REASON_CODE_MAPPING.keys))
+  end
+end
