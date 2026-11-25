@@ -852,6 +852,14 @@ RSpec.describe ExclusionDeterminationService do
       end
     end
 
+    context 'with the real MockAmericanIndianAlaskaNative data source' do
+      it_behaves_like "a data source reaching the exclusion determination",
+                      source_id: :mock_american_indian_alaska_native, reason_code: "american_indian_alaska_native_excluded" do
+        let(:confirming_member_data) { build(:certification_member_data, account_email: "member+aian-tribe@example.com", cert_date:) }
+        let(:non_confirming_member_data) { build(:certification_member_data, account_email: "member+aian-no@example.com", cert_date:) }
+      end
+    end
+
     context 'with the real MockDrugTreatment data source' do
       let(:member_data) { build(:certification_member_data, va_icn: va_icn, cert_date:) }
 
