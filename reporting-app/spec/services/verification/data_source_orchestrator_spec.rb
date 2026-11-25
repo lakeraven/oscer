@@ -128,6 +128,31 @@ RSpec.describe Verification::DataSourceOrchestrator do
       end
     end
 
+    context "when an ordered source declares an exclusion outcome" do
+      before do
+        hybrid = Class.new(Verification::DataSource) do
+          def self.declared_outcomes = [ :high_unemployment_county, :is_veteran_with_disability ]
+          def call(certification:) = Verification::DataSourceResult.success(outcomes: [ :is_veteran_with_disability ])
+        end
+        stub_const("HybridSource", hybrid)
+        stub_source("PlainSource", result: success(outcomes: [ :high_unemployment_county ]))
+        stub_registry(
+          [
+            registry_entry(id: :hybrid, adapter_class: "HybridSource", order: 10),
+            registry_entry(id: :plain, adapter_class: "PlainSource", order: 20)
+          ]
+        )
+      end
+
+      it "leaves it out of the ordered pass" do
+        expect(evaluate.attempted.map { |attempt| attempt[:source_id] }).to eq([ :plain ])
+      end
+
+      it "lets the next ordered source satisfy the pass" do
+        expect(evaluate).to have_attributes(satisfied: true, source_id: :plain)
+      end
+    end
+
     context "when no ordered source succeeds with an outcome" do
       it "reports not satisfied while retaining the attempts" do
         stub_source("EmptyOne", result: success(outcomes: []))
