@@ -54,8 +54,13 @@ module Verification
 
     def ordered_sources
       Rails.application.config.verification_data_sources
-        .select { |entry| entry[:enabled] && !entry[:order].nil? }
+        .select { |entry| entry[:enabled] && !entry[:order].nil? && !emits_exclusion?(entry) }
         .sort_by { |entry| entry[:order] }
+    end
+
+    # The pass records outcomes by non-exclusion category, so a source declaring an exclusion stays out.
+    def emits_exclusion?(entry)
+      entry[:adapter_class].constantize.declared_outcomes.any? { |outcome| Exclusion.find(outcome).present? }
     end
 
     def build_source(entry)

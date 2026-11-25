@@ -179,11 +179,7 @@ module VerificationDataSourcesLoader
   # at boot instead. Exclusion-only sources (order: nil) never enter the pass.
   #
   # Exclusion keys stay permitted: a hybrid is registrable by design, its exclusion outcomes ranked by
-  # Exclusion.priority_order. KNOWN GAP, untracked and NOT covered by
-  # https://github.com/navapbc/oscer/issues/810 (scoped to ExclusionDeterminationService):
-  # ordered_sources selects on enabled and order alone, so hybrids are scoped out of the pass but not
-  # filtered from it, and an order-bearing hybrid emitting an exclusion outcome stalls the case the
-  # same silent way. Durable fix is filtering them in DataSourceOrchestrator#ordered_sources.
+  # Exclusion.priority_order. DataSourceOrchestrator#ordered_sources leaves such a source out of the pass.
   def validate_non_exclusion_outcome_categories!(entry, outcomes)
     return if entry[:order].nil?
 

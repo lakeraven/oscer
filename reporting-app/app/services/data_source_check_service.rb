@@ -11,8 +11,7 @@
 class DataSourceCheckService
   include Strata::VirtualActor
 
-  # Raised when a source emits an outcome with no determination shape here. Reachable by config: the
-  # loader lets an order-bearing source declare exclusion outcomes, which this pass cannot rank.
+  # Raised when a source emits an outcome with no determination shape here.
   class UnsupportedOutcomeError < StandardError; end
 
   class << self
