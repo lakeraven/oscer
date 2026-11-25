@@ -13,6 +13,8 @@ module Verification
     #
     # Outcomes: :drug_treatment (exclusion), :was_in_drug_treatment (exception).
     class MockDrugTreatment < Verification::DataSource
+      include VaIcnKeyed
+
       SOURCE = "mock_drug_treatment"
       OUTCOME_EXCLUDED = :drug_treatment
       OUTCOME_EXCEPTED = :was_in_drug_treatment
@@ -23,10 +25,6 @@ module Verification
 
       protected
 
-      def precondition_met?(certification)
-        certification.member_data&.va_icn.present?
-      end
-
       def perform(certification:)
         success_result(
           outcomes: outcomes_for(certification.member_data.va_icn),
@@ -36,12 +34,11 @@ module Verification
 
       private
 
-      # Only the last character matters; a non-digit last character is "no result".
+      # A non-digit last character is "no result".
       def outcomes_for(va_icn)
-        last = va_icn[-1]
-        return [] unless last&.match?(/\A\d\z/)
+        digit = last_digit(va_icn)
+        return [] if digit.nil?
 
-        digit = last.to_i
         if (digit % 3).zero?
           [ OUTCOME_EXCLUDED ]
         elsif digit.odd?
