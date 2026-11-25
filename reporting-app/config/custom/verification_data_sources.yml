@@ -73,6 +73,13 @@ mock_drug_treatment:
   adapter_class: "Verification::Adapters::MockDrugTreatment"
   order: null
 
+# Mock AI/AN source, consulted at the exclusion step (order-less); tags in account_email are
+# listed in the adapter. A real source must not copy this email-keyed trigger.
+mock_american_indian_alaska_native:
+  enabled: true
+  adapter_class: "Verification::Adapters::MockAmericanIndianAlaskaNative"
+  order: null
+
 # Mock data sources for Verification::DataSourceOrchestrator (OSCER-805). Both are
 # order-bearing, so the orchestrator consults them: no real non-exclusion source exists
 # yet, so these are what exercise the trailing verification_data_source_check step.
