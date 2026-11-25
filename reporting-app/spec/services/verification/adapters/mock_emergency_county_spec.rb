@@ -29,13 +29,11 @@ RSpec.describe Verification::Adapters::MockEmergencyCounty do
 
   let(:certification) { build(:certification, member_data: build(:certification_member_data, va_icn: va_icn)) }
 
+  it_behaves_like "a registered verification data source"
+
   describe ".declared_outcomes" do
     it "declares the emergency-county exception outcome key" do
       expect(described_class.declared_outcomes).to contain_exactly(:resides_in_declared_emergency_county)
-    end
-
-    it "declares only Determination reason-code mapping keys" do
-      expect(described_class.declared_outcomes).to all(be_in(Determination::REASON_CODE_MAPPING.keys))
     end
 
     it "declares only non-exclusion (order-bearing) outcome keys" do
