@@ -721,7 +721,7 @@ RSpec.describe CertificationCase, type: :model do
   describe ".open_verification_window" do
     it "sets the window at the expected duration" do
       certification_case.open_verification_window
-      start_date = Date.today
+      start_date = Date.current
       duration = CertificationCase::VERIFICATION_WINDOW_DURATION_DAYS
 
       expect(certification_case.verification_window_start_date).to eq start_date
@@ -730,7 +730,7 @@ RSpec.describe CertificationCase, type: :model do
 
     it "doesn't set the window if it's already set" do
       # set the window a week ago
-      past_start_date = Date.today - 7
+      past_start_date = Date.current - 7
       travel_to(past_start_date) do
         certification_case.open_verification_window
       end
@@ -739,7 +739,7 @@ RSpec.describe CertificationCase, type: :model do
       expect(certification_case.verification_window_start_date).to eq past_start_date
 
       # try to set it again now
-      start_date = Date.today
+      start_date = Date.current
       certification_case.open_verification_window
 
       # verify

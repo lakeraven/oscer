@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :activity do
-    month { Date.today.prev_month.beginning_of_month }
+    month { Date.current.prev_month.beginning_of_month }
     name { Faker::Company.name }
     category { Activity::ALLOWED_CATEGORIES.sample }
 

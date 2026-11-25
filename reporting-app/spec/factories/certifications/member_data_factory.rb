@@ -5,7 +5,7 @@ FactoryBot.define do
     skip_create
 
     transient do
-      cert_date { Date.today }
+      cert_date { Date.current }
       num_months { 1 }
       # Reported activity lands in the certifiable months, which end the month before cert_date.
       latest_certifiable_month { cert_date.beginning_of_month << 1 }

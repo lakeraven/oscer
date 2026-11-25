@@ -113,7 +113,7 @@ RSpec.describe "/activities", type: :request do
             name: Faker::Company.name,
             activity_type: "work_activity",
             hours: rand(1..79).to_s,
-            month: (Date.today - 2.months).beginning_of_month,
+            month: (Date.current - 2.months).beginning_of_month,
             category: "employment"
           }
 
@@ -127,7 +127,7 @@ RSpec.describe "/activities", type: :request do
             name: Faker::Company.name,
             activity_type: "work_activity",
             hours: rand(1..79).to_s,
-            month: (Date.today - 2.months).beginning_of_month,
+            month: (Date.current - 2.months).beginning_of_month,
             category: "employment"
           }
 
@@ -142,7 +142,7 @@ RSpec.describe "/activities", type: :request do
             name: Faker::Company.name,
             activity_type: "work_activity",
             hours: "5.25",
-            month: (Date.today - 2.months).beginning_of_month,
+            month: (Date.current - 2.months).beginning_of_month,
             category: "employment"
           }
 
@@ -187,7 +187,7 @@ RSpec.describe "/activities", type: :request do
             name: "",
             activity_type: "income_activity",
             income: "1500",
-            month: (Date.today - 2.months).beginning_of_month,
+            month: (Date.current - 2.months).beginning_of_month,
             category: "employment"
           }
         }
@@ -210,7 +210,7 @@ RSpec.describe "/activities", type: :request do
             name: Faker::Company.name,
             activity_type: "income_activity",
             income: rand(50..300).to_s,
-            month: (Date.today - 2.months).beginning_of_month,
+            month: (Date.current - 2.months).beginning_of_month,
             category: "employment"
           }
 
@@ -224,7 +224,7 @@ RSpec.describe "/activities", type: :request do
             name: Faker::Company.name,
             activity_type: "income_activity",
             income: rand(1..79).to_s,
-            month: (Date.today - 2.months).beginning_of_month,
+            month: (Date.current - 2.months).beginning_of_month,
             category: "employment"
           }
 
@@ -268,7 +268,7 @@ RSpec.describe "/activities", type: :request do
           name: Faker::Company.name,
           activity_type: "work_activity",
           hours: rand(1..79).to_s,
-          month: (Date.today - 2.months).beginning_of_month,
+          month: (Date.current - 2.months).beginning_of_month,
           category: "education"
         }
 
