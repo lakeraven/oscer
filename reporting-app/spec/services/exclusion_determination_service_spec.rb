@@ -820,6 +820,27 @@ RSpec.describe ExclusionDeterminationService do
       end
     end
 
+    context 'when a called source returns an error result' do
+      let(:member_data) { build(:certification_member_data, cert_date:) }
+
+      before do
+        errored = Class.new(Verification::DataSource) do
+          define_singleton_method(:declared_outcomes) { [ :drug_treatment ] }
+          define_method(:call) do |certification:|
+            Verification::DataSourceResult.error(error_code: :timeout, error_message: 'source down', audit_data: { source: self.class.name })
+          end
+        end
+        register([ "ErroringSource", errored, {} ])
+      end
+
+      it 'records the member as not excluded (current behavior, pending navapbc/oscer#810)' do
+        service.determine(kase)
+        expect(Strata::EventManager).to have_received(:publish).with('DeterminedNotExcluded', { case_id: kase.id, certification_id: kase.certification_id })
+        expect(recorded_exclusion).to be_nil
+        expect(recorded_exception).to be_nil
+      end
+    end
+
     context 'when a source is disabled' do
       let(:member_data) { build(:certification_member_data, cert_date:) }
 
