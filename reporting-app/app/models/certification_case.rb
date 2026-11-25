@@ -354,7 +354,7 @@ class CertificationCase < Strata::Case
   end
 
   def verification_window_ended?
-    verification_window_end_date.present? && verification_window_end_date < Time.current
+    verification_window_end_date.present? && verification_window_end_date.in_time_zone < Time.current
   end
 
   private
