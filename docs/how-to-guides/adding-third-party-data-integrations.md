@@ -1,6 +1,6 @@
 # Adding Third Party Data Integrations
 
-This guide explains how to add new external data integrations to the project using our standardized pattern.
+This guide explains how to add new external data integrations to the project using our standardized pattern. To make an integration's answer count toward exclusion, exception or community engagement determinations, also register it as a verification data source; see [Registering Verification Data Sources](registering-verification-data-sources.md).
 
 ## Architecture Overview
 
